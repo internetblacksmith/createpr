@@ -5,14 +5,11 @@
   "fmt"
   "log"
   "net/url"
-  "os"
   "os/exec"
   "strings"
+	"runtime"
  
-
   "github.com/go-git/go-git/v5"
-  // "github.com/go-git/go-git/v5/config"
-  // "github.com/go-git/go-git/v5/plumbing"
  )
  
 
@@ -73,9 +70,8 @@
 
  func openBrowser(url string) {
   var err error
- 
 
-  switch os := os.Getenv("OS"); os {
+  switch os := runtime.GOOS; os {
   case "windows":
   err = exec.Command("cmd", "/c", "start", url).Run()
   case "darwin":

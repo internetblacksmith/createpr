@@ -2,6 +2,9 @@
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-go
 
 name: Go Build & Test
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 permissions:
   contents: read
 

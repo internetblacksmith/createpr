@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"log"
 	"net/url"
-	"os"
 	"os/exec"
+	"runtime"
 	"strings"
 
 	"github.com/go-git/go-git/v5"
@@ -60,12 +60,18 @@ func parseGithubURL(remoteURL string) (string, error) {
 	}
 }
 
+// Create a variable for the OS getter to make testing easier
+var getOS = func() string {
+	return runtime.GOOS
+}
+
+// Make exec.Command replaceable for testing
 var execCommand = exec.Command
 
 func openBrowser(url string) error {
 	var cmd *exec.Cmd
 
-	switch os := os.Getenv("OS"); os {
+	switch os := getOS(); os {
 	case "windows":
 		cmd = execCommand("cmd", "/c", "start", url)
 	case "darwin":

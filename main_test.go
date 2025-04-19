@@ -1,7 +1,6 @@
 package main
 
 import (
-	"os"
 	"os/exec"
 	"reflect"
 	"testing"
@@ -76,39 +75,43 @@ type MockCommand struct {
 func TestOpenBrowser(t *testing.T) {
 	// Save original function and restore after test
 	originalExecCommand := execCommand
-	defer func() { execCommand = originalExecCommand }()
+	originalGetOS := getOS
+	defer func() {
+		execCommand = originalExecCommand
+		getOS = originalGetOS
+	}()
 
 	testCases := []struct {
 		name         string
-		osEnv        string
+		goos         string
 		url          string
 		expectedCmd  string
 		expectedArgs []string
 	}{
 		{
 			name:         "Windows",
-			osEnv:        "windows",
+			goos:         "windows",
 			url:          "https://github.com/owner/repo/compare/branch",
 			expectedCmd:  "cmd",
 			expectedArgs: []string{"/c", "start", "https://github.com/owner/repo/compare/branch"},
 		},
 		{
 			name:         "macOS",
-			osEnv:        "darwin",
+			goos:         "darwin",
 			url:          "https://github.com/owner/repo/compare/branch",
 			expectedCmd:  "open",
 			expectedArgs: []string{"https://github.com/owner/repo/compare/branch"},
 		},
 		{
 			name:         "Linux",
-			osEnv:        "linux",
+			goos:         "linux",
 			url:          "https://github.com/owner/repo/compare/branch",
 			expectedCmd:  "xdg-open",
 			expectedArgs: []string{"https://github.com/owner/repo/compare/branch"},
 		},
 		{
 			name:         "Default OS",
-			osEnv:        "something-else",
+			goos:         "something-else",
 			url:          "https://github.com/owner/repo/compare/branch",
 			expectedCmd:  "xdg-open",
 			expectedArgs: []string{"https://github.com/owner/repo/compare/branch"},
@@ -127,8 +130,9 @@ func TestOpenBrowser(t *testing.T) {
 			}
 
 			// Set OS environment
-			os.Setenv("OS", tc.osEnv)
-			defer os.Unsetenv("OS")
+			getOS = func() string {
+				return tc.goos
+			}
 
 			// Call the function we're testing
 			openBrowser(tc.url)

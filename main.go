@@ -4,13 +4,14 @@ import (
 	"fmt"
 	"log"
 	"net/url"
+	"os"
 	"os/exec"
-	"runtime"
 	"strings"
 
 	"github.com/go-git/go-git/v5"
 )
 
+// TODO: add option to open expanded dif by appending ?`expand=1` at the end of the URL
 func main() {
 	repo, err := git.PlainOpen(".")
 	if err != nil {
@@ -59,18 +60,19 @@ func parseGithubURL(remoteURL string) (string, error) {
 	}
 }
 
-func openBrowser(url string) {
-	var err error
+var execCommand = exec.Command
 
-	switch os := runtime.GOOS; os {
+func openBrowser(url string) error {
+	var cmd *exec.Cmd
+
+	switch os := os.Getenv("OS"); os {
 	case "windows":
-		err = exec.Command("cmd", "/c", "start", url).Run()
+		cmd = execCommand("cmd", "/c", "start", url)
 	case "darwin":
-		err = exec.Command("open", url).Run()
+		cmd = execCommand("open", url)
 	default: // "linux", "freebsd", "openbsd", "netbsd"
-		err = exec.Command("xdg-open", url).Run()
+		cmd = execCommand("xdg-open", url)
 	}
-	if err != nil {
-		log.Fatalf("Failed to open browser: %v", err)
-	}
+
+	return cmd.Run()
 }

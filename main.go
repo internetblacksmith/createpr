@@ -11,6 +11,7 @@ import (
 	"github.com/go-git/go-git/v5"
 )
 
+// TODO: add option to open expanded dif by appending ?`expand=1` at the end of the URL
 func main() {
 	repo, err := git.PlainOpen(".")
 	if err != nil {
@@ -38,7 +39,10 @@ func main() {
 	newPRURL := fmt.Sprintf("%s/compare/%s", githubURL, url.PathEscape(currentBranch))
 
 	fmt.Printf("Opening: %s\n", newPRURL)
-	openBrowser(newPRURL)
+	err = openBrowser(newPRURL)
+	if err != nil {
+		log.Fatalf("Failed to open browser: %v", err)
+	}
 }
 
 func parseGithubURL(remoteURL string) (string, error) {
@@ -59,18 +63,25 @@ func parseGithubURL(remoteURL string) (string, error) {
 	}
 }
 
-func openBrowser(url string) {
-	var err error
+// Create a variable for the OS getter to make testing easier
+var getOS = func() string {
+	return runtime.GOOS
+}
 
-	switch os := runtime.GOOS; os {
+// Make exec.Command replaceable for testing
+var execCommand = exec.Command
+
+func openBrowser(url string) error {
+	var cmd *exec.Cmd
+
+	switch os := getOS(); os {
 	case "windows":
-		err = exec.Command("cmd", "/c", "start", url).Run()
+		cmd = execCommand("cmd", "/c", "start", url)
 	case "darwin":
-		err = exec.Command("open", url).Run()
+		cmd = execCommand("open", url)
 	default: // "linux", "freebsd", "openbsd", "netbsd"
-		err = exec.Command("xdg-open", url).Run()
+		cmd = execCommand("xdg-open", url)
 	}
-	if err != nil {
-		log.Fatalf("Failed to open browser: %v", err)
-	}
+
+	return cmd.Run()
 }

@@ -22,6 +22,15 @@ builds:
       - linux
       - windows
       - darwin
+brews:
+  - name: createpr
+    homepage: https://github.com/internetblacksmith/createpr
+    tap:
+      owner: jabawack81
+      name: homebrew-internetblacksmith
+    commit_author:
+      name: jabawack81
+      email: jabawack81@gmail.com
 
 archives:
   - formats: [tar.gz]

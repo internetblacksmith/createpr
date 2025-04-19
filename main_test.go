@@ -135,7 +135,10 @@ func TestOpenBrowser(t *testing.T) {
 			}
 
 			// Call the function we're testing
-			openBrowser(tc.url)
+			err := openBrowser(tc.url)
+			if err != nil {
+				t.Errorf("openBrowser returned unexpected error: %v", err)
+			}
 
 			// Verify the correct command was used
 			if mock.cmd != tc.expectedCmd {

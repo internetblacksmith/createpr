@@ -109,7 +109,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🙏 Acknowledgments
 
-- Inspired by a rant from [the](https://x.com/theo)
+- Inspired by a rant from [Theo](https://x.com/theo) in one of his streams 
 - Built with [Go](https://golang.org/)
 - Released with [GoReleaser](https://goreleaser.com/)
 

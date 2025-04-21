@@ -17,7 +17,9 @@ import (
 
 // TODO: add option to open expanded dif by appending ?`expand=1` at the end of the URL
 func main() {
-	repo, err := git.PlainOpen(".")
+	repo, err := git.PlainOpenWithOptions(".", &git.PlainOpenOptions{
+		DetectDotGit: true,
+	})
 	if err != nil {
 		log.Fatalf("Failed to open git repository: %v", err)
 	}

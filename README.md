@@ -107,6 +107,47 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
+## 🤔 FAQ
+
+### ☝️🤓 "Uhm, actually... GitHub CLI can already do this with `gh pr create --web`"
+
+Yes, and pizza delivery exists too, but sometimes you just want to grab a slice without filling out forms! 
+
+CreatePR is the "no authentication, zero API calls, instant gratification" solution:
+
+- **Zero login needed** - No "please authenticate" dance required
+- **Lightning fast** - Makes absolutely no network requests (the gh CLI makes several)
+- **Featherweight champion** - Tiny binary that does one thing perfectly
+- **Works offline** - Your spotty coffee shop WiFi can't stop you from getting to that PR page
+- **No relationship baggage** - Doesn't need to know your GitHub username, tokens, or life story
+
+If you're already happily married to the GitHub CLI, that's cool! But for a commitment-free PR creation experience, CreatePR is your speed-dating alternative.
+
+### 🔥 Why did you build this when other tools exist?
+
+I got tired of:
+1. Click repository
+2. Click Pull requests
+3. Click New pull request
+4. Click branch dropdown
+5. Scroll... scroll... scroll...
+6. Click my branch
+7. Question my life choices
+
+Now it's just `createpr` → *browser opens* → *PR ready to complete*
+
+### 🛠️ Will you add feature X?
+
+Probably not. The beauty of CreatePR is its single-minded focus - it opens PR pages and nothing else. It's not trying to boil the ocean or become your GitHub Swiss Army knife.
+
+That said, if you have an idea that keeps it simple while improving the core functionality, submit an issue! Just remember: if your feature request includes the phrase "and then it could also..." it's probably a no.
+
+### 👻 Does this actually create the PR for me?
+
+Nope! CreatePR just teleports you to the PR creation page with your current branch pre-selected. You still get to write that thoughtful PR description your colleagues will definitely read thoroughly.
+
+Think of it as an express elevator to the PR floor, not an automated PR robot.
+
 ## 🙏 Acknowledgments
 
 - Inspired by a rant from [Theo](https://x.com/theo) in one of his streams 

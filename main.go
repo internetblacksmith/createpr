@@ -46,8 +46,8 @@ func main() {
 	newPRURL := fmt.Sprintf("%s/compare/%s", githubURL, url.PathEscape(currentBranch))
 
 	fmt.Printf("Opening: %s\n", newPRURL)
-	err = openBrowser(newPRURL)
-	if err != nil {
+
+	if err := openBrowser(newPRURL); err != nil {
 		log.Fatalf("Failed to open browser: %v", err)
 	}
 }

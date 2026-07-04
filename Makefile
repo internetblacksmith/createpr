@@ -3,26 +3,35 @@ GO := go
 
 .DEFAULT_GOAL := menu
 
+# Colors
+CYAN    := \033[36m
+GREEN   := \033[32m
+YELLOW  := \033[33m
+DIM     := \033[2m
+BOLD    := \033[1m
+RESET   := \033[0m
+
 menu:
-	@echo "╔═══════════════════════════════════════════════════╗"
-	@echo "║          createpr — Command Menu                  ║"
-	@echo "╚═══════════════════════════════════════════════════╝"
-	@echo ""
-	@echo "  === Development ==="
-	@echo "  1) Build binary"
-	@echo "  2) Install globally"
-	@echo "  3) Run (go run)"
-	@echo ""
-	@echo "  === Testing ==="
-	@echo "  4) Run all tests"
-	@echo "  5) Run tests (verbose)"
-	@echo "  6) Run linter"
-	@echo ""
-	@echo "  === Maintenance ==="
-	@echo "  7) Clean build artifacts"
-	@echo "  8) Tidy modules"
-	@echo ""
-	@read -p "Enter choice: " choice; \
+	@printf "\n"
+	@printf "$(BOLD)$(CYAN)╔══════════════════════════════════════════════════════════════╗$(RESET)\n"
+	@printf "$(BOLD)$(CYAN)║                   createpr - Command Menu                    ║$(RESET)\n"
+	@printf "$(BOLD)$(CYAN)╚══════════════════════════════════════════════════════════════╝$(RESET)\n"
+	@printf "\n"
+	@printf "  $(BOLD)$(GREEN)=== Development ===$(RESET)\n"
+	@printf "   $(YELLOW)1)$(RESET)  make build            $(DIM)Build the binary$(RESET)\n"
+	@printf "   $(YELLOW)2)$(RESET)  make install          $(DIM)Install globally via go install$(RESET)\n"
+	@printf "   $(YELLOW)3)$(RESET)  make run              $(DIM)Run with go run$(RESET)\n"
+	@printf "\n"
+	@printf "  $(BOLD)$(GREEN)=== Testing ===$(RESET)\n"
+	@printf "   $(YELLOW)4)$(RESET)  make test             $(DIM)Run all tests$(RESET)\n"
+	@printf "   $(YELLOW)5)$(RESET)  make test-verbose     $(DIM)Run tests with verbose output$(RESET)\n"
+	@printf "   $(YELLOW)6)$(RESET)  make lint             $(DIM)Run go vet$(RESET)\n"
+	@printf "\n"
+	@printf "  $(BOLD)$(GREEN)=== Maintenance ===$(RESET)\n"
+	@printf "   $(YELLOW)7)$(RESET)  make clean            $(DIM)Remove build artifacts$(RESET)\n"
+	@printf "   $(YELLOW)8)$(RESET)  make tidy             $(DIM)Tidy Go modules$(RESET)\n"
+	@printf "\n"
+	@read -p "  Enter choice: " choice; \
 	case $$choice in \
 		1) $(MAKE) build ;; \
 		2) $(MAKE) install ;; \
@@ -61,15 +70,18 @@ tidy:
 	$(GO) mod tidy
 
 help:
-	@echo "Available commands:"
-	@echo "  make build         - Build the binary"
-	@echo "  make install       - Install globally via go install"
-	@echo "  make run           - Run with go run"
-	@echo "  make test          - Run all tests"
-	@echo "  make test-verbose  - Run tests with verbose output"
-	@echo "  make lint          - Run go vet"
-	@echo "  make clean         - Remove build artifacts"
-	@echo "  make tidy          - Tidy Go modules"
+	@printf "\n"
+	@printf "$(BOLD)Available commands:$(RESET)\n"
+	@printf "\n"
+	@printf "  $(CYAN)make build$(RESET)         Build the binary\n"
+	@printf "  $(CYAN)make install$(RESET)       Install globally via go install\n"
+	@printf "  $(CYAN)make run$(RESET)           Run with go run\n"
+	@printf "  $(CYAN)make test$(RESET)          Run all tests\n"
+	@printf "  $(CYAN)make test-verbose$(RESET)  Run tests with verbose output\n"
+	@printf "  $(CYAN)make lint$(RESET)          Run go vet\n"
+	@printf "  $(CYAN)make clean$(RESET)         Remove build artifacts\n"
+	@printf "  $(CYAN)make tidy$(RESET)          Tidy Go modules\n"
+	@printf "\n"
 
 list: help
 

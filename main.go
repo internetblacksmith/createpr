@@ -15,6 +15,8 @@ import (
 	"github.com/go-git/go-git/v5"
 )
 
+const defaultRemoteName = "origin"
+
 // TODO: add option to open expanded dif by appending ?`expand=1` at the end of the URL
 func main() {
 	repo, err := git.PlainOpenWithOptions(".", &git.PlainOpenOptions{
@@ -24,10 +26,9 @@ func main() {
 		log.Fatalf("Failed to open git repository: %v", err)
 	}
 
-	remoteName := "origin"
-	remote, err := repo.Remote(remoteName)
+	remote, err := repo.Remote(defaultRemoteName)
 	if err != nil {
-		log.Fatalf("Failed to get remote '%s': %v", remoteName, err)
+		log.Fatalf("Failed to get remote '%s': %v", defaultRemoteName, err)
 	}
 
 	remoteURL := remote.Config().URLs[0]

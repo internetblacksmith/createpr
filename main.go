@@ -19,27 +19,33 @@ const defaultRemoteName = "origin"
 
 // TODO: add option to open expanded dif by appending ?`expand=1` at the end of the URL
 func main() {
+	if err := run(); err != nil {
+		log.Fatalf("createpr: %v", err)
+	}
+}
+
+func run() error {
 	repo, err := git.PlainOpenWithOptions(".", &git.PlainOpenOptions{
 		DetectDotGit: true,
 	})
 	if err != nil {
-		log.Fatalf("Failed to open git repository: %v", err)
+		return fmt.Errorf("Failed to open git repository: %v", err)
 	}
 
 	remote, err := repo.Remote(defaultRemoteName)
 	if err != nil {
-		log.Fatalf("Failed to get remote '%s': %v", defaultRemoteName, err)
+		return fmt.Errorf("Failed to get remote '%s': %v", defaultRemoteName, err)
 	}
 
 	remoteURL := remote.Config().URLs[0]
 	githubURL, err := parseGithubURL(remoteURL)
 	if err != nil {
-		log.Fatalf("Failed to parse GitHub URL: %v", err)
+		return fmt.Errorf("Failed to parse GitHub URL: %v", err)
 	}
 
 	headRef, err := repo.Head()
 	if err != nil {
-		log.Fatalf("Failed to get HEAD reference: %v", err)
+		return fmt.Errorf("Failed to get HEAD reference: %v", err)
 	}
 	currentBranch := headRef.Name().Short()
 
@@ -48,8 +54,10 @@ func main() {
 	fmt.Printf("Opening: %s\n", newPRURL)
 
 	if err := openBrowser(newPRURL); err != nil {
-		log.Fatalf("Failed to open browser: %v", err)
+		return fmt.Errorf("Failed to open browser: %v", err)
 	}
+
+	return nil
 }
 
 func parseGithubURL(remoteURL string) (string, error) {
